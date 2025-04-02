@@ -24,6 +24,12 @@ jobs:
           cd website
           npm install --if-present
           npm run build --if-present
+      
+      # Add Azure login step
+      - name: 'Login to Azure'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Deploy directly to Azure Web App
       - name: 'Deploy to Azure Web App'
