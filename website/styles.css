@@ -46,6 +46,21 @@ header {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--anthropic-dark);
+    display: block;
+}
+
+.site-subtitle {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--anthropic-text);
+    display: block;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+.logo a {
+    display: flex;
+    flex-direction: column;
 }
 
 /* Navigation styles removed */
@@ -184,6 +199,11 @@ footer {
     
     .logo {
         margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .site-subtitle {
+        margin-top: 2px;
     }
     
     .social-links {
