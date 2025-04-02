@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Context Protocol (MCP) Setup Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="/">
+                    <span class="site-title">MCP Demo Website</span>
+                </a>
+            </div>
+            <!-- Navigation removed as requested -->
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/haomli/" target="_blank" class="social-link linkedin">
+                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://x.com/lihaoming2000" target="_blank" class="social-link twitter">
+                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <span>X</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="title-section">
+                <h1>Setting Up Model Context Protocol (MCP) on Mac for Claude Desktop App</h1>
+            </div>
+            
+            <div class="content">
+                <p>This guide shows how to set up Model Context Protocol (MCP) on a Mac with the Claude Desktop App.</p>
+
+                <h2>Why This Setup is Necessary</h2>
+                <p>The Model Context Protocol (MCP) enables Claude to interact with your computer's file system and potentially other services. This setup involves three key components:</p>
+                <ol>
+                    <li><strong>Node.js</strong>: A JavaScript runtime environment required to run MCP servers</li>
+                    <li><strong>MCP Server</strong>: Software that acts as a bridge between Claude and your computer's resources</li>
+                    <li><strong>Claude Configuration</strong>: JSON settings that tell Claude how to connect to the MCP server</li>
+                </ol>
+                <p>With this setup, Claude gains capabilities like reading and writing files on your computer, which makes it much more useful for real-world tasks.</p>
+
+                <h2>Step 1: Install Node.js</h2>
+                <p>Node.js is required to run MCP servers locally. If you haven't installed it yet:</p>
+                <ol>
+                    <li>Visit <a href="https://nodejs.org">nodejs.org</a></li>
+                    <li>Download the LTS (Long Term Support) version for macOS</li>
+                    <li>Run the installer and follow the instructions</li>
+                    <li>After installation, verify it works by opening Terminal and running:</li>
+                </ol>
+
+                <div class="code-block">
+                    <pre><code>node -v
+npm -v</code></pre>
+                </div>
+
+                <p>You should see version numbers displayed (example output):</p>
+                <div class="code-block">
+                    <pre><code>v22.14.0
+10.9.2</code></pre>
+                </div>
+
+                <h2>Step 2: Verify Your Mac Username</h2>
+                <p>You'll need your Mac username for configuration:</p>
+                <ol>
+                    <li>Look at your Terminal prompt - it's usually displayed there (example: <code>username@Computer-Name ~</code>)</li>
+                    <li>Or use the <code>whoami</code> command:
+                        <div class="code-block">
+                            <pre><code>whoami</code></pre>
+                        </div>
+                    </li>
+                    <li>Or check your home directory path:
+                        <div class="code-block">
+                            <pre><code>echo $HOME</code></pre>
+                        </div>
+                        This will show something like "/Users/yourusername"
+                    </li>
+                </ol>
+
+                <h2>Step 3: Locate the Claude Configuration File</h2>
+                <p>The Claude configuration file is located at:</p>
+                <div class="code-block">
+                    <pre><code>~/Library/Application Support/Claude/claude_desktop_config.json</code></pre>
+                </div>
+
+                <p>To navigate there:</p>
+                <ol>
+                    <li>Open Terminal and enter:
+                        <div class="code-block">
+                            <pre><code>open ~/Library/Application\ Support/Claude/</code></pre>
+                        </div>
+                    </li>
+                    <li>Alternatively, in Finder:
+                        <ul>
+                            <li>Press Shift+Command+G</li>
+                            <li>Paste: ~/Library/Application Support/Claude</li>
+                            <li>Click Go</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>You can open this folder in VS Code using:</p>
+                <div class="code-block">
+                    <pre><code>code ~/Library/Application\ Support/Claude/</code></pre>
+                </div>
+                <p>If the file doesn't exist, you can create it.</p>
+
+                <h2>Step 4: Install the MCP Filesystem Server</h2>
+                <p>The filesystem server allows Claude to access files on your computer. Install it globally:</p>
+                <div class="code-block">
+                    <pre><code>sudo npm install -g @modelcontextprotocol/server-filesystem</code></pre>
+                </div>
+                <p>You'll be prompted for your password. After installation, verify it worked:</p>
+                <div class="code-block">
+                    <pre><code>npm list -g @modelcontextprotocol/server-filesystem</code></pre>
+                </div>
+                <p>You should see output similar to:</p>
+                <div class="code-block">
+                    <pre><code>/usr/local/lib
+└── @modelcontextprotocol/server-filesystem@2025.3.28</code></pre>
+                </div>
+
+                <h2>Step 5: Create the Configuration File</h2>
+                <p>Create or edit <code>claude_desktop_config.json</code> with a configuration that gives Claude access to your Desktop:</p>
+                <div class="code-block">
+                    <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/yourusername/Desktop"
+      ]
+    }
+  }
+}</code></pre>
+                </div>
+                <p>Replace <code>yourusername</code> with your actual Mac username.</p>
+                <p>This configuration tells Claude:</p>
+                <ul>
+                    <li>To use the filesystem MCP server via the <code>npx</code> command</li>
+                    <li>To automatically answer "yes" to any prompts (<code>-y</code> flag)</li>
+                    <li>To only allow access to your Desktop folder</li>
+                </ul>
+
+                <h2>Step 6: Apply the Configuration</h2>
+                <p>For the changes to take effect:</p>
+                <ol>
+                    <li>Save the configuration file</li>
+                    <li>Completely quit the Claude Desktop App</li>
+                    <li>Restart the Claude Desktop App</li>
+                </ol>
+
+                <h2>Step 7: Test the MCP Setup</h2>
+                <p>After restarting Claude, test the MCP functionality by asking questions like:</p>
+                <ul>
+                    <li>"What files do I have on my Desktop?"</li>
+                    <li>"Can you list PDF files on my Desktop?"</li>
+                    <li>"Create a new text file on my Desktop"</li>
+                </ul>
+                <p>If Claude responds with actual information about your files or can create files, then the MCP setup is working correctly.</p>
+
+                <hr>
+
+                <h2>Advanced Configuration</h2>
+                <p>For more advanced configurations, you can:</p>
+                <ul>
+                    <li>Add additional directories by adding more paths to the "args" array</li>
+                    <li>Incorporate other MCP servers like Brave Search</li>
+                    <li>Set up memory capabilities</li>
+                </ul>
+                <p>Example of a more complete configuration:</p>
+                <div class="code-block">
+                    <pre><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/yourusername/Desktop",
+        "/Users/yourusername/Downloads",
+        "/Users/yourusername/Documents"
+      ]
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "YOUR_API_KEY_HERE"
+      }
+    }
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <p>© 2025 Anthropic</p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
